@@ -1,5 +1,5 @@
 Pillow
 opencv-python
 numpy
-pickle5
+pickle
 streamlit
