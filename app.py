@@ -86,7 +86,7 @@ def get_hinge_features(img_file):
     return feature_vector.reshape(1, -1)
 
 
-with open('C:/Users/hp/Desktop/Models/model_hinge_poly.pkl', 'rb') as model_file:
+with open('model_hinge_poly.pkl', 'rb') as model_file:
     model = pickle.load(model_file)
     
 st.title("Handwriting-based Gender Classification")
