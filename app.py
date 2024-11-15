@@ -87,19 +87,42 @@ def get_hinge_features(img_file):
 
 
 with open('model_hinge_poly.pkl', 'rb') as model_file:
-    model = pickle.load(model_file)
-    
-st.title("Handwriting-based Gender Classification")
+    model_hinge = pickle.load(model_file)
+
+with open('model_cold_poly.pkl', 'rb') as model_file:
+    model_cold = pickle.load(model_file)
+
+with open('model_combined_poly.pkl', 'rb') as model_file:
+    model_combined = pickle.load(model_file)
+
+# Streamlit app UI
+st.title("✍️ Handwriting-based Gender Classification")
 st.write("Upload your handwriting sample image to get a gender prediction.")
+
+# Dropdown menu to select the model
+model_choice = st.selectbox(
+    "Select the model to use for prediction:",
+    options=["Hinge", "Cold", "Combined"],
+    index=0
+)
+
 uploaded_file = st.file_uploader("Choose a handwriting sample image...", type=["jpg", "png", "jpeg"])
 
 if uploaded_file is not None:
     hinge_features = get_hinge_features(uploaded_file)
+    # Add functionality to process features for other models if necessary
 else:
     st.info("Please upload an image file to process.")
 
-
 if st.button("Predict Gender"):
-        prediction = model.predict(hinge_features)
-        gender = "Male" if prediction == 1 else "Female"
-        st.write(f"Predicted Gender: {gender}")
+    # Select the appropriate model
+    if model_choice == "Hinge":
+        prediction = model_hinge.predict(hinge_features)
+    elif model_choice == "Cold":
+        prediction = model_cold.predict(hinge_features)  # Replace with actual cold model feature processing if different
+    elif model_choice == "Combined":
+        prediction = model_combined.predict(hinge_features)  # Replace with combined model feature processing if different
+    
+    gender = "Male" if prediction == 1 else "Female"
+    st.write(f"Predicted Gender: {gender}")
+
