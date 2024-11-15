@@ -10,6 +10,14 @@ LEG_LENGTH = 25
 sharpness_factor = 10
 bordersize = 3
 
+N_RHO_BINS_COLD = 7
+N_ANGLE_BINS_COLD = 12
+N_BINS_COLD = N_RHO_BINS_COLD * N_ANGLE_BINS_COLD
+BIN_SIZE_COLD = 360 // N_ANGLE_BINS_COLD
+R_INNER = 5.0
+R_OUTER = 35.0
+K_S = np.arange(3, 8)
+
 def preprocess_image(img_file, sharpness_factor=10, bordersize=3):
     im = Image.open(img_file)
 
@@ -85,6 +93,50 @@ def get_hinge_features(img_file):
 
     return feature_vector.reshape(1, -1)
 
+def get_cold_features(img_file, approx_poly_factor=0.01):
+    bw_image = preprocess_image(img_file, sharpness_factor, bordersize)
+    contours = get_contour_pixels(bw_image)
+
+    rho_bins_edges = np.log10(np.linspace(R_INNER, R_OUTER, N_RHO_BINS_COLD))
+    feature_vectors = np.zeros((len(K_S), N_BINS_COLD))
+
+    for j, k in enumerate(K_S):
+        hist = np.zeros((N_RHO_BINS_COLD, N_ANGLE_BINS_COLD))
+        for cnt in contours:
+            epsilon = approx_poly_factor * cv2.arcLength(cnt, True)
+            cnt = cv2.approxPolyDP(cnt, epsilon, True)
+            n_pixels = len(cnt)
+            if n_pixels == 0:
+                continue  # Avoid division by zero
+
+            point_1s = np.array([point[0] for point in cnt])
+            x1s, y1s = point_1s[:, 0], point_1s[:, 1]
+            point_2s = np.array([cnt[(i + k) % n_pixels][0] for i in range(n_pixels)])
+            x2s, y2s = point_2s[:, 0], point_2s[:, 1]
+
+            thetas = np.degrees(np.arctan2(y2s - y1s, x2s - x1s) + np.pi)
+            rhos = np.sqrt((y2s - y1s) ** 2 + (x2s - x1s) ** 2)
+
+            # Handle log10(0) by adding a small epsilon
+            epsilon_rho = 1e-10
+            rhos_log_space = np.log10(rhos + epsilon_rho)
+
+            quantized_rhos = np.digitize(rhos_log_space, rho_bins_edges)  # Bin indices start at 1
+            quantized_rhos = quantized_rhos - 1  # Convert to 0-based index
+
+            # Ensure bin indices are within the valid range
+            quantized_rhos = np.clip(quantized_rhos, 0, N_RHO_BINS_COLD - 1)
+
+            for i, r_bin in enumerate(quantized_rhos):
+                theta_bin = int(thetas[i] // BIN_SIZE_COLD) % N_ANGLE_BINS_COLD
+                hist[r_bin, theta_bin] += 1
+
+        # Normalize histogram
+        normalised_hist = hist / hist.sum() if hist.sum() != 0 else hist
+        feature_vectors[j] = normalised_hist.flatten()
+
+    return feature_vectors.flatten().reshape(1, -1)
+
 
 with open('model_hinge_poly.pkl', 'rb') as model_file:
     model_hinge = pickle.load(model_file)
@@ -110,7 +162,8 @@ uploaded_file = st.file_uploader("Choose a handwriting sample image...", type=["
 
 if uploaded_file is not None:
     hinge_features = get_hinge_features(uploaded_file)
-    # Add functionality to process features for other models if necessary
+    cold_features = get_cold_features(uploaded_file)
+    combined_features = np.hstack((hinge_features, cold_features))
 else:
     st.info("Please upload an image file to process.")
 
@@ -119,9 +172,9 @@ if st.button("Predict Gender"):
     if model_choice == "Hinge":
         prediction = model_hinge.predict(hinge_features)
     elif model_choice == "Cold":
-        prediction = model_cold.predict(hinge_features)  # Replace with actual cold model feature processing if different
+        prediction = model_cold.predict(cold_features)  
     elif model_choice == "Combined":
-        prediction = model_combined.predict(hinge_features)  # Replace with combined model feature processing if different
+        prediction = model_combined.predict(combined_features)  
     
     gender = "Male" if prediction == 1 else "Female"
     st.write(f"Predicted Gender: {gender}")
