@@ -2,7 +2,7 @@ import streamlit as st
 import numpy as np
 import pandas as pd
 from sklearn.svm import SVC
-from sklearn.metrics import accuracy_score, confusion_matrix, f1_score
+from sklearn.metrics import accuracy_score, confusion_matrix
 from sklearn.model_selection import train_test_split
 import plotly.graph_objects as go
 from sklearn.model_selection import GridSearchCV
@@ -75,7 +75,7 @@ optimization_method = st.sidebar.selectbox("Choose Hyperparameter Optimization M
 
 # C and gamma sliders for manual tuning
 if optimization_method == "None":
-    C_value = st.sidebar.slider("Select C", 0.1, 2000.0, 0.1)
+    C_value = st.sidebar.slider("Select C", 0.1, 100, 1.0)
     gamma_value = st.sidebar.slider("Select Gamma", 0.001, 10.0, 0.1)
 
 # Load the correct feature set
@@ -96,15 +96,27 @@ else:
 
 # Display results
 if optimization_method == "None":
-    # Display donut charts for accuracy
-    fig = go.Figure()
-    fig.add_trace(go.Pie(
-        labels=["Training", "Testing"], 
-        values=[accuracy_train*100, accuracy_test*100],
+    # Display donut chart for training accuracy
+    fig_train = go.Figure()
+    fig_train.add_trace(go.Pie(
+        labels=["Training Accuracy", "Remaining"], 
+        values=[accuracy_train * 100, 100 - accuracy_train * 100],
         hole=0.3,
         hoverinfo="label+percent"
     ))
-    st.plotly_chart(fig)
+    fig_train.update_layout(title="Training Accuracy")
+    st.plotly_chart(fig_train)
+
+    # Display donut chart for testing accuracy
+    fig_test = go.Figure()
+    fig_test.add_trace(go.Pie(
+        labels=["Testing Accuracy", "Remaining"], 
+        values=[accuracy_test * 100, 100 - accuracy_test * 100],
+        hole=0.3,
+        hoverinfo="label+percent"
+    ))
+    fig_test.update_layout(title="Testing Accuracy")
+    st.plotly_chart(fig_test)
 
     # Confusion Matrix
     st.subheader("Confusion Matrix (Testing Data)")
