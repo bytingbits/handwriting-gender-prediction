@@ -75,7 +75,7 @@ optimization_method = st.sidebar.selectbox("Choose Hyperparameter Optimization M
 
 # C and gamma sliders for manual tuning
 if optimization_method == "None":
-    C_value = st.sidebar.slider("Select C", 0.1, 100, 1.0)
+    C_value = st.sidebar.slider("Select C", 0.0, 400.0, 1.0)
     gamma_value = st.sidebar.slider("Select Gamma", 0.001, 10.0, 0.1)
 
 # Load the correct feature set
