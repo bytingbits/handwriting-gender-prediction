@@ -172,8 +172,13 @@ if st.button("Predict Gender"):
     # Select the appropriate model
     if model_choice == "Hinge":
         prediction = model_hinge.predict(hinge_features)
+        #testing = 0.9233128834355828
+        #training = 0.6216216216216216
     elif model_choice == "Cold":
-        prediction = model_cold.predict(cold_features)    
+        prediction = model_cold.predict(cold_features)
+        #testing = 1.0
+        #training = 0.8378378378378378
+        
     
     gender = "Male" if prediction == 1 else "Female"
     st.write(f"Predicted Gender: {gender}")
