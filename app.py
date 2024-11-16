@@ -154,16 +154,17 @@ st.write("Upload your handwriting sample image to get a gender prediction.")
 # Dropdown menu to select the model
 model_choice = st.selectbox(
     "Select the model to use for prediction:",
-    options=["Hinge", "Cold", "Combined"],
+    options=["Hinge", "Cold"],
     index=0
 )
 
 uploaded_file = st.file_uploader("Choose a handwriting sample image...", type=["jpg", "png", "jpeg"])
 
 if uploaded_file is not None:
+    image = Image.open(uploaded_file)
+    st.image(image, caption="Uploaded Handwriting Sample", use_column_width=True)
     hinge_features = get_hinge_features(uploaded_file)
     cold_features = get_cold_features(uploaded_file)
-    combined_features = np.hstack((hinge_features, cold_features))
 else:
     st.info("Please upload an image file to process.")
 
@@ -172,9 +173,7 @@ if st.button("Predict Gender"):
     if model_choice == "Hinge":
         prediction = model_hinge.predict(hinge_features)
     elif model_choice == "Cold":
-        prediction = model_cold.predict(cold_features)  
-    elif model_choice == "Combined":
-        prediction = model_combined.predict(combined_features)  
+        prediction = model_cold.predict(cold_features)    
     
     gender = "Male" if prediction == 1 else "Female"
     st.write(f"Predicted Gender: {gender}")
