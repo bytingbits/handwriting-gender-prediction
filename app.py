@@ -132,6 +132,7 @@ if feature_set == "Hinge":
         C_value = st.sidebar.slider("Select C", 0.01, 50.0, 0.1)
         gamma_value = 'scale'
 else:
+    st.snow()
     x_train, y_train, x_test, y_test = x_cold_train, y_cold_train, x_cold_test, y_cold_test
     if optimization_method == "Manual":
         C_value = st.sidebar.slider("Select C", 0.01, 500.0, 1.0)
@@ -142,7 +143,7 @@ else:
 # Train and evaluate with hyperparameter optimization or manual tuning
 if optimization_method == "GridSearchCV":
     clf, best_params = hyperparameter_optimization(x_train, y_train)
-    st.write(f"Best Parameters: {best_params}")
+    #st.write(f"Best Parameters: {best_params}")
     cols = st.columns(len(best_params))  # Create a column for each item in the dictionary
 
 # Iterate over the dictionary and display key-value pairs in separate columns
