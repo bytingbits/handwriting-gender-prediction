@@ -143,6 +143,10 @@ else:
 if optimization_method == "GridSearchCV":
     clf, best_params = hyperparameter_optimization(x_train, y_train)
     st.write(f"Best Parameters: {best_params}")
+    st.write("Formula for scaled Gamma:")
+    st.latex(r"""
+    \frac{1}{n_{\text{features}} \cdot \text{Var}(X)}
+""")
 else:
     clf = SVC(kernel='poly', C=C_value, gamma=gamma_value)
     accuracy_train, accuracy_test, confusion_train, confusion_test, y_pred_test = train_and_evaluate(
