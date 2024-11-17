@@ -177,7 +177,8 @@ model_choice = st.selectbox(
 )
 
 uploaded_file = st.file_uploader("Choose a handwriting sample image...", type=["jpg", "png", "jpeg"])
-
+testing = 0
+training = 0
 if uploaded_file is not None:
     image = Image.open(uploaded_file)
     st.image(image, caption="Uploaded Handwriting Sample", use_column_width=True)
@@ -201,35 +202,35 @@ if st.button("Predict Gender"):
         testing = 0.9233128834355828*100
         training = 0.6216216216216216*100
 # Create data for the donut charts
-testing_data = pd.DataFrame({
-    'category': ['Testing', 'Remaining'],
-    'value': [testing, 100-testing],
-    'chart': ['Testing'] * 2
-})
-
-training_data = pd.DataFrame({
-    'category': ['Training', 'Remaining'],
-    'value': [training, 100-training],
-    'chart': ['Training'] * 2
-})
-
-# Combine the data
-data = pd.concat([testing_data, training_data])
-col1, col2 = st.columns(2)
-
-with col1:
-    testing_chart = create_donut_chart(
-        testing_data,
-        f'Testing Data: {testing}'
-    )
-    st.altair_chart(testing_chart)
-
-with col2:
-    training_chart = create_donut_chart(
-        training_data,
-        f'Training Data: {training}'
-    )
-    st.altair_chart(training_chart)
+    testing_data = pd.DataFrame({
+        'category': ['Testing', 'Remaining'],
+        'value': [testing, 100-testing],
+        'chart': ['Testing'] * 2
+    })
+    
+    training_data = pd.DataFrame({
+        'category': ['Training', 'Remaining'],
+        'value': [training, 100-training],
+        'chart': ['Training'] * 2
+    })
+    
+    # Combine the data
+    data = pd.concat([testing_data, training_data])
+    col1, col2 = st.columns(2)
+    
+    with col1:
+        testing_chart = create_donut_chart(
+            testing_data,
+            f'Testing Data: {testing}'
+        )
+        st.altair_chart(testing_chart)
+    
+    with col2:
+        training_chart = create_donut_chart(
+            training_data,
+            f'Training Data: {training}'
+        )
+        st.altair_chart(training_chart)
 
         
     
