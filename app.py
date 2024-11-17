@@ -189,17 +189,31 @@ if st.button("Predict Gender"):
     # Select the appropriate model
     if model_choice == "Hinge":
         prediction = model_hinge.predict(hinge_features)
-        testing = 1.0
-        training = 0.8378378378378378
+        testing = 1.0*100
+        training = 0.8378378378378378*100
         #testing = 0.9233128834355828
         #training = 0.6216216216216216
         # Create data for the donut charts
     
     elif model_choice == "Cold":
         prediction = model_cold.predict(cold_features)
-        testing = 0.9233128834355828
-        training = 0.6216216216216216
-        
+        testing = 0.9233128834355828*100
+        training = 0.6216216216216216*100
+# Create data for the donut charts
+testing_data = pd.DataFrame({
+    'category': ['Testing', 'Remaining'],
+    'value': [testing, 100-testing],
+    'chart': ['Testing'] * 2
+})
+
+training_data = pd.DataFrame({
+    'category': ['Training', 'Remaining'],
+    'value': [training, 100-training],
+    'chart': ['Training'] * 2
+})
+
+# Combine the data
+data = pd.concat([testing_data, training_data])
 col1, col2 = st.columns(2)
 
 with col1:
