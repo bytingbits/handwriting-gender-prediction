@@ -133,7 +133,7 @@ if feature_set == "Hinge":
         C_value = st.sidebar.slider("Select C", 0.01, 50.0, 0.1)
         gamma_value = 'scale'
 else:
-    if not st.session_state.cold_selected_before::
+    if not st.session_state.cold_selected_before:
         st.snow()
         st.session_state.cold_selected_before = True
     x_train, y_train, x_test, y_test = x_cold_train, y_cold_train, x_cold_test, y_cold_test
