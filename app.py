@@ -73,10 +73,10 @@ feature_set = st.sidebar.selectbox("Choose Feature Set", ["Hinge", "Cold"])
 
 # Choose optimization method
 optimization_method = st.sidebar.selectbox("Choose Hyperparameter Optimization Method", 
-                                           ["Manual", "GridSearchCV"])
+                                           ["None", "GridSearchCV"])
 
 # C and gamma sliders for manual tuning
-if optimization_method == "Manual":
+if optimization_method == "None":
     C_value = st.sidebar.slider("Select C", 0.01, 500.0, 1.0)
     gamma_value = st.sidebar.slider("Select Gamma", 0.001, 10.0, 0.1)
 
