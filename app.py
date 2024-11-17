@@ -143,6 +143,13 @@ else:
 if optimization_method == "GridSearchCV":
     clf, best_params = hyperparameter_optimization(x_train, y_train)
     st.write(f"Best Parameters: {best_params}")
+    cols = st.columns(len(best_params))  # Create a column for each item in the dictionary
+
+# Iterate over the dictionary and display key-value pairs in separate columns
+    for i, (key, value) in enumerate(best_params.items()):
+        cols[i].write(key)  # Display value below the heading
+        cols[i].heading(value)  # Display key as heading
+        
     st.write("Formula for scaled Gamma:")
     st.latex(r"""
     \frac{1}{n_{\text{features}} \cdot \text{Var}(X)}
