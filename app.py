@@ -139,7 +139,7 @@ if optimization_method == "GridSearchCV":
     clf, best_params = hyperparameter_optimization(x_train, y_train)
     st.write(f"Best Parameters: {best_params}")
 else:
-    clf = SVC(kernel='poly', C=C_value, gamma=gamma_value)
+    clf = SVC(kernel='poly', C=C_value, gamma=gamma_value, class_weight='balanced')
     accuracy_train, accuracy_test, confusion_train, confusion_test, y_pred_test = train_and_evaluate(
         clf, x_train, y_train, x_test, y_test
     )
