@@ -10,7 +10,7 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 import pickle
 import os
-
+snow_cnt=0
 # Path to your local data folder
 LOCAL_DATA_PATH = './'  # Adjust this if your data is in a different folder
 MODEL_SAVE_PATH = './models/'  # Folder to save trained models
@@ -132,7 +132,9 @@ if feature_set == "Hinge":
         C_value = st.sidebar.slider("Select C", 0.01, 50.0, 0.1)
         gamma_value = 'scale'
 else:
-    st.snow()
+    if not(snow_cnt):
+        st.snow()
+        snow_cnt=1
     x_train, y_train, x_test, y_test = x_cold_train, y_cold_train, x_cold_test, y_cold_test
     if optimization_method == "Manual":
         C_value = st.sidebar.slider("Select C", 0.01, 500.0, 1.0)
