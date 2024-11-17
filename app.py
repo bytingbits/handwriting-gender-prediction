@@ -184,9 +184,9 @@ if optimization_method == "Manual":
         st.write(df)
 
 # Saving and downloading the model
-os.makedirs(MODEL_SAVE_PATH, exist_ok=True)
-model_filename = os.path.join(MODEL_SAVE_PATH, f'model_{feature_set.lower()}.pkl')
-pickle.dump(clf, open(model_filename, 'wb'))
+#os.makedirs(MODEL_SAVE_PATH, exist_ok=True)
+#model_filename = os.path.join(MODEL_SAVE_PATH, f'model_{feature_set.lower()}.pkl')
+#pickle.dump(clf, open(model_filename, 'wb'))
 
 # Provide a download link for the model
-st.download_button("Download Model", model_filename)
+#st.download_button("Download Model", model_filename)
