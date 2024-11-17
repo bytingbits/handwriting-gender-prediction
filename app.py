@@ -131,6 +131,8 @@ if optimization_method == "Manual":
 # Load the correct feature set
 if feature_set == "Hinge":
     x_train, y_train, x_test, y_test = x_hinge_train, y_hinge_train, x_hinge_test, y_hinge_test
+    C_value = st.sidebar.slider("Select C", 0.01, 50.0, 0.1)
+    gamma_value = 'scale'
 else:
     x_train, y_train, x_test, y_test = x_cold_train, y_cold_train, x_cold_test, y_cold_test
 
