@@ -39,7 +39,7 @@ x_cold_train, x_cold_test, y_cold_train, y_cold_test = train_test_split(
 # Hyperparameter optimization function
 def hyperparameter_optimization(x_train, y_train):
     param_grid = {
-        'C': [0.1, 1, 10, 100, 200, 400],  # Range of values for C
+        'C': [200, 400],  # Range of values for C
         'gamma': [0.1, 1, 7, 10],  # Range of values for gamma
         'kernel': ['poly']
         
@@ -77,7 +77,7 @@ optimization_method = st.sidebar.selectbox("Choose Hyperparameter Optimization M
 
 # C and gamma sliders for manual tuning
 if optimization_method == "None":
-    C_value = st.sidebar.slider("Select C", 0.01, 10000.0, 1.0)
+    C_value = st.sidebar.slider("Select C", 0.01, 500.0, 1.0)
     gamma_value = st.sidebar.slider("Select Gamma", 0.001, 10.0, 0.1)
 
 # Load the correct feature set
