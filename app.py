@@ -88,7 +88,7 @@ x_cold_train, x_cold_test, y_cold_train, y_cold_test = train_test_split(
 def hyperparameter_optimization(x_train, y_train):
     param_grid = {
         'C': [1, 10, 50, 200, 400],  # Range of values for C
-        'gamma': [0.001, 0.01, 0.1, 1, 7.6, 10],  # Range of values for gamma
+        'gamma': [0.001, 0.01, 0.1, 1, 7.6, 10, 'scale'],  # Range of values for gamma
         'kernel': ['poly']
         
     }
