@@ -3,6 +3,7 @@ import cv2
 import numpy as np
 import pickle
 import streamlit as st
+import pandas as pd
 
 N_ANGLE_BINS_HINGE = 40
 BIN_SIZE_HINGE = 360 // N_ANGLE_BINS_HINGE
