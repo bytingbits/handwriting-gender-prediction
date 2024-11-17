@@ -148,7 +148,7 @@ if optimization_method == "GridSearchCV":
 # Iterate over the dictionary and display key-value pairs in separate columns
     for i, (key, value) in enumerate(best_params.items()):
         cols[i].write(key)  # Display value below the heading
-        cols[i].heading(value)  # Display key as heading
+        cols[i].header(value)  # Display key as heading
         
     st.write("Formula for scaled Gamma:")
     st.latex(r"""
