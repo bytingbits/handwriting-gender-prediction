@@ -205,14 +205,14 @@ col1, col2 = st.columns(2)
 with col1:
     testing_chart = create_donut_chart(
         testing_data,
-        f'Testing Data: {}'
+        f'Testing Data: {testing}'
     )
     st.altair_chart(testing_chart)
 
 with col2:
     training_chart = create_donut_chart(
         training_data,
-        'Training Data: 83.78%'
+        f'Training Data: {training}'
     )
     st.altair_chart(training_chart)
 
