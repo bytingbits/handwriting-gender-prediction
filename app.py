@@ -15,6 +15,54 @@ import os
 LOCAL_DATA_PATH = './'  # Adjust this if your data is in a different folder
 MODEL_SAVE_PATH = './models/'  # Folder to save trained models
 
+def create_animated_credit_bar():
+    # Custom CSS for the container
+    st.markdown("""
+        <style>
+        .credit-container {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: linear-gradient(90deg, #ff9ecd, #ffb8de, #ffd1ec);
+            padding: 10px;
+            text-align: center;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+        }
+        .floating-circle {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            margin: 0 10px;
+            animation: float 2s infinite ease-in-out;
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        .credit-text {
+            font-family: 'Arial', sans-serif;
+            font-weight: bold;
+            color: #333;
+            margin: 0 20px;
+        }
+        </style>
+        """, unsafe_allow_html=True)
+
+    # Create the animated bar with circles and text
+    st.markdown(f"""
+        <div class="credit-container">
+            <div class="floating-circle" style="background-color: #ff9ecd; animation-delay: 0s;"></div>
+            <div class="floating-circle" style="background-color: #ffb8de; animation-delay: 0.3s;"></div>
+            <div class="floating-circle" style="background-color: #ffd1ec; animation-delay: 0.6s;"></div>
+            <span class="credit-text">Made by Sreya, Shakthi and Sharada</span>
+            <div class="floating-circle" style="background-color: #ffd1ec; animation-delay: 0.9s;"></div>
+            <div class="floating-circle" style="background-color: #ffb8de; animation-delay: 1.2s;"></div>
+            <div class="floating-circle" style="background-color: #ff9ecd; animation-delay: 1.5s;"></div>
+        </div>
+    """, unsafe_allow_html=True)
+
 # Function to load data from local folder
 def load_data_from_local():
     # Load the data from local files
@@ -67,7 +115,7 @@ def train_and_evaluate(clf, x_train, y_train, x_test, y_test):
 
 # Streamlit UI
 st.title("SVM Hyperparameter Optimization and Model Training")
-
+create_animated_credit_bar()
 # Feature selection
 feature_set = st.sidebar.selectbox("Choose Feature Set", ["Hinge", "Cold"])
 
