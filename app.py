@@ -125,8 +125,7 @@ optimization_method = st.sidebar.selectbox("Choose Hyperparameter Optimization M
 
 # C and gamma sliders for manual tuning
 if optimization_method == "Manual":
-    C_value = st.sidebar.slider("Select C", 0.01, 500.0, 1.0)
-    gamma_value = st.sidebar.slider("Select Gamma", 0.001, 10.0, 0.1)
+    
 
 # Load the correct feature set
 if feature_set == "Hinge":
@@ -134,7 +133,10 @@ if feature_set == "Hinge":
     C_value = st.sidebar.slider("Select C", 0.01, 50.0, 0.1)
     gamma_value = 'scale'
 else:
+    C_value = st.sidebar.slider("Select C", 0.01, 500.0, 1.0)
+    gamma_value = st.sidebar.slider("Select Gamma", 0.001, 10.0, 0.1)
     x_train, y_train, x_test, y_test = x_cold_train, y_cold_train, x_cold_test, y_cold_test
+    
 
 # Train and evaluate with hyperparameter optimization or manual tuning
 if optimization_method == "GridSearchCV":
