@@ -4,6 +4,7 @@ import numpy as np
 import pickle
 import streamlit as st
 import pandas as pd
+import altair as alt
 
 N_ANGLE_BINS_HINGE = 40
 BIN_SIZE_HINGE = 360 // N_ANGLE_BINS_HINGE
