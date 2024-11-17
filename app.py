@@ -136,6 +136,23 @@ def get_cold_features(img_file, approx_poly_factor=0.01):
         feature_vectors[j] = normalised_hist.flatten()
 
     return feature_vectors.flatten().reshape(1, -1)
+def create_donut_chart(data, title):
+    return alt.Chart(data).mark_arc(innerRadius=50).encode(
+        theta=alt.Theta(field='value', type='quantitative', scale=alt.Scale(domain=[0, 100])),
+        color=alt.Color(
+            'category:N',
+            scale=alt.Scale(
+                domain=['Testing', 'Training', 'Remaining'],
+                range=['#3b82f6', '#3b82f6', '#e5e7eb']
+            ),
+            legend=None
+        ),
+        tooltip=['category', 'value']
+    ).properties(
+        width=200,
+        height=200,
+        title=title
+    )
 
 
 with open('model_hinge_poly.pkl', 'rb') as model_file:
@@ -172,14 +189,36 @@ if st.button("Predict Gender"):
     # Select the appropriate model
     if model_choice == "Hinge":
         prediction = model_hinge.predict(hinge_features)
+        testing = 1.0
+        training = 0.8378378378378378
         #testing = 0.9233128834355828
         #training = 0.6216216216216216
+        # Create data for the donut charts
+    
     elif model_choice == "Cold":
         prediction = model_cold.predict(cold_features)
-        #testing = 1.0
-        #training = 0.8378378378378378
+        testing = 0.9233128834355828
+        training = 0.6216216216216216
+        
+col1, col2 = st.columns(2)
+
+with col1:
+    testing_chart = create_donut_chart(
+        testing_data,
+        f'Testing Data: {}'
+    )
+    st.altair_chart(testing_chart)
+
+with col2:
+    training_chart = create_donut_chart(
+        training_data,
+        'Training Data: 83.78%'
+    )
+    st.altair_chart(training_chart)
+
         
     
     gender = "Male" if prediction == 1 else "Female"
-    st.write(f"Predicted Gender: {gender}")
+    st.write(f"Predicted Gender:")
+    st.title(f"{gender}")
 
