@@ -73,10 +73,10 @@ feature_set = st.sidebar.selectbox("Choose Feature Set", ["Hinge", "Cold"])
 
 # Choose optimization method
 optimization_method = st.sidebar.selectbox("Choose Hyperparameter Optimization Method", 
-                                           ["None", "GridSearchCV"])
+                                           ["Manual", "GridSearchCV"])
 
 # C and gamma sliders for manual tuning
-if optimization_method == "None":
+if optimization_method == "Manual":
     C_value = st.sidebar.slider("Select C", 0.01, 500.0, 1.0)
     gamma_value = st.sidebar.slider("Select Gamma", 0.001, 10.0, 0.1)
 
@@ -97,7 +97,7 @@ else:
     )
 
 # Display results
-if optimization_method == "None":
+if optimization_method == "Manual":
     # Display donut chart for training accuracy
     fig_train = go.Figure()
     fig_train.add_trace(go.Pie(
